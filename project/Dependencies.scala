@@ -17,6 +17,7 @@
 import sbt._
 
 object Version {
+  val flexmark   = "0.34.18"
   val foundation = "6.2.3"
   val jtidy      = "r938"
   val pegdown    = "1.6.0"
@@ -27,6 +28,9 @@ object Version {
 }
 
 object Library {
+  val flexmark   = "com.vladsch.flexmark" % "flexmark-all" % Version.flexmark
+  val flexmarkProfilePegdown
+                 = "com.vladsch.flexmark" % "flexmark-profile-pegdown" % Version.flexmark
   val foundation = "org.webjars"       % "foundation" % Version.foundation
   val jtidy      = "net.sf.jtidy"      % "jtidy"      % Version.jtidy
   val pegdown    = "org.pegdown"       % "pegdown"    % Version.pegdown
