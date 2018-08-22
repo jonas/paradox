@@ -28,9 +28,7 @@ object Version {
 }
 
 object Library {
-  val flexmark   = "com.vladsch.flexmark" % "flexmark-all" % Version.flexmark
-  val flexmarkProfilePegdown
-                 = "com.vladsch.flexmark" % "flexmark-profile-pegdown" % Version.flexmark
+  val flexmark   = "com.vladsch.flexmark" % "flexmark-profile-pegdown" % Version.flexmark
   val foundation = "org.webjars"       % "foundation" % Version.foundation
   val jtidy      = "net.sf.jtidy"      % "jtidy"      % Version.jtidy
   val pegdown    = "org.pegdown"       % "pegdown"    % Version.pegdown

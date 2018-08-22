@@ -45,7 +45,6 @@ lazy val core = project
     name := "paradox",
     libraryDependencies ++= Seq(
       Library.flexmark,
-      Library.flexmarkProfilePegdown,
       Library.pegdown,
       Library.st4
     ),
