@@ -20,29 +20,33 @@ import org.parboiled.Parboiled
 import org.pegdown.ast.RootNode
 import org.pegdown.plugins.PegDownPlugins
 import org.pegdown.{ Extensions, Parser, ParserWithDirectives }
+import com.vladsch.flexmark.parser.{ Parser => FlexmarkParser }
 import scala.concurrent.duration._
 
 /**
  * A configured markdown parser.
  */
-class Reader(parser: Parser) {
+class Reader(parser: Parser, flexmark: FlexmarkParser) {
 
-  def this(
-    options:             Int                        = Extensions.ALL ^ Extensions.HARDWRAPS /* disable hard wraps, see #31 */ ,
-    maxParsingTime:      Duration                   = 2.seconds,
-    parseRunnerProvider: Parser.ParseRunnerProvider = Parser.DefaultParseRunnerProvider,
-    plugins:             PegDownPlugins             = PegDownPlugins.NONE) =
-    this(Parboiled.createParser[ParserWithDirectives, AnyRef](
-      classOf[ParserWithDirectives],
-      options: java.lang.Integer,
-      maxParsingTime.toMillis: java.lang.Long,
-      parseRunnerProvider,
-      plugins))
+  def this() =
+    this(
+      Parboiled.createParser[ParserWithDirectives, AnyRef](
+        classOf[ParserWithDirectives],
+        Extensions.ALL ^ Extensions.HARDWRAPS /* disable hard wraps, see #31 */ : java.lang.Integer,
+        2.seconds.toMillis: java.lang.Long,
+        Parser.DefaultParseRunnerProvider,
+        PegDownPlugins.NONE),
+      FlexmarkOptions.createParser)
 
   /**
    * Parse markdown text into a pegdown AST.
    */
-  def read(text: String): RootNode = read(text.toArray)
+  def read(text: String): RootNode = {
+    val document = flexmark.parse(text + "\n\n")
+    val html = FlexmarkOptions.createRenderer.render(document)
+    println(html)
+    read(text.toArray)
+  }
 
   /**
    * Parse markdown text into a pegdown AST.
