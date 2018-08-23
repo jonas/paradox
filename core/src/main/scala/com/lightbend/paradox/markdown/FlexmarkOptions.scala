@@ -23,6 +23,8 @@ import com.vladsch.flexmark.profiles.pegdown.Extensions
 import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter
 import com.vladsch.flexmark.util.options.DataHolder
 
+import com.lightbend.paradox.directive.DirectiveExtension
+
 object FlexmarkOptions {
   final val PegdownOptions = PegdownOptionsAdapter.flexmarkOptions(
     true,
@@ -34,6 +36,7 @@ object FlexmarkOptions {
       .toMutable()
       .set(AnchorLinkExtension.ANCHORLINKS_ANCHOR_CLASS, "anchor")
       .set(AnchorLinkExtension.ANCHORLINKS_TEXT_PREFIX, """<span class="anchor-link"></span>""")
+      .set(Parser.EXTENSIONS, java.util.Arrays.asList(DirectiveExtension.create()))
   }
 
   def createParser = Parser.builder(createOptions).build()
