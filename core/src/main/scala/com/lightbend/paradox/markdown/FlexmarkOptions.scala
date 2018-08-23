@@ -16,6 +16,7 @@
 
 package com.lightbend.paradox.markdown
 
+import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension
 import com.vladsch.flexmark.html.HtmlRenderer
 import com.vladsch.flexmark.parser.Parser
 import com.vladsch.flexmark.profiles.pegdown.Extensions
@@ -23,13 +24,20 @@ import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter
 import com.vladsch.flexmark.util.options.DataHolder
 
 object FlexmarkOptions {
-  final val OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
+  final val PegdownOptions = PegdownOptionsAdapter.flexmarkOptions(
     true,
     Extensions.ALL ^ Extensions.HARDWRAPS /* disable hard wraps, see #31 */
   )
 
-  def createParser = Parser.builder(OPTIONS).build()
-  def createRenderer = HtmlRenderer.builder(OPTIONS).build()
+  def createOptions = {
+    PegdownOptions
+      .toMutable()
+      .set(AnchorLinkExtension.ANCHORLINKS_ANCHOR_CLASS, "anchor")
+      .set(AnchorLinkExtension.ANCHORLINKS_TEXT_PREFIX, """<span class="anchor-link"></span>""")
+  }
+
+  def createParser = Parser.builder(createOptions).build()
+  def createRenderer = HtmlRenderer.builder(createOptions).build()
 
   // use the PARSER to parse and RENDERER to render with pegdown compatibility
 }
